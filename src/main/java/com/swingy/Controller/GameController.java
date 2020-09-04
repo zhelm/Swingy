@@ -12,8 +12,12 @@ public class GameController {
         this.getNewHero();
         map = new Map(Hero);
         this.displayMap();
+        Hero.moveNorth();
         System.out.println(map.getCenter());
-        Hero.gainLevel();
+        this.displayMap();
+        System.out.println();
+        this.Hero.moveWest();
+        this.Hero.moveWest();
         this.displayMap();
     }
     
@@ -24,6 +28,10 @@ public class GameController {
     // Create/Select Hero
     public void displayMap() {
         String[][] display = map.getMap();
+    }
+
+    public void moveHeroNorth() {
+        Hero.moveNorth();
     }
 
 

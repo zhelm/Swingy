@@ -13,6 +13,10 @@ public class Map {
 
     public String[][] getMap() {
 
+        boolean match = false;
+        int middleX = Hero.getXCoordinate();
+        int middleY = Hero.getYCoordinate();
+
         // int[][] multi = new int[3][3];
         // for (int[] array : multi) {
         //     Arrays.fill(array, 9);
@@ -23,9 +27,15 @@ public class Map {
             Arrays.fill(strings, "*");
         }
 
-        for (String[] strings : ret) {
-            for (int i = 0; i < strings.length; i++) {
-                System.out.print(strings[i] + ' ');
+        for (int i = 0; i < ret.length; i++) {
+            if(i == middleY) match = true;
+            for (int j = 0; j < ret[i].length; j++) {
+                if(j == middleX && match == true) {
+                    match = false;
+                System.out.print("H" + ' ');
+                } else {
+                    System.out.print(ret[i][j] + ' ');
+                }
             }
             System.out.println();
         }
