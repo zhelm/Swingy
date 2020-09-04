@@ -1,6 +1,5 @@
-package com.swingy.Model.Artifact;
+package com.swingy.Model;
 
 public class ArtifactModel {
     public String test = "Well ok";
-
 } 
