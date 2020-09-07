@@ -1,14 +1,18 @@
 package com.swingy.View;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.swingy.Model.HeroModel;
+import com.swingy.Model.VillainModel;
 
 public class Map {
     HeroModel Hero;
+    ArrayList<VillainModel> Villains;
 
-    public Map(HeroModel Hero) {
+    public Map(HeroModel Hero, ArrayList<VillainModel> Villains) {
         this.Hero = Hero;
+        this.Villains = Villains;
     }
 
     public String[][] getMap() {
@@ -17,16 +21,18 @@ public class Map {
         int middleX = Hero.getXCoordinate();
         int middleY = Hero.getYCoordinate();
 
-        // int[][] multi = new int[3][3];
-        // for (int[] array : multi) {
-        //     Arrays.fill(array, 9);
-        // }
-
         String[][] ret = new String[(this.Hero.getLevel()-1)*5+10-(this.Hero.getLevel()%2)][(this.Hero.getLevel()-1)*5+10-(this.Hero.getLevel()%2)];
         for (String[] strings : ret) {
             Arrays.fill(strings, "*");
         }
-
+        
+        // This is for the Villains
+        for (int i = 0; i < Villains.size(); i++) {
+            System.out.println(Villains.get(i).getClass().getSimpleName());
+            System.out.println(Villains.get(i).coordinates.getXCoordinate() + " " + Villains.get(i).coordinates.getYCoordinate());
+            ret[Villains.get(i).coordinates.getXCoordinate()][Villains.get(i).coordinates.getYCoordinate()] = "V";
+        }
+        // This is for the Hero
         for (int i = 0; i < ret.length; i++) {
             if(i == middleY) match = true;
             for (int j = 0; j < ret[i].length; j++) {
@@ -39,9 +45,10 @@ public class Map {
             }
             System.out.println();
         }
-        
+
         return(ret);
     }
+
     public int getCenter() {
         return(((this.Hero.getLevel()-1)*5+10-(this.Hero.getLevel()%2))/2);
     }
