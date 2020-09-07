@@ -4,8 +4,9 @@ import com.swingy.Model.VillainModel;
 
 public class Demon extends VillainModel {
 
-    public Demon(int level) {
-        super(level, 1, 1);
+    // Its sittng ontop of each other
+    public Demon(int level, float multiplier) {
+        super(level, 1*multiplier, 1*multiplier);
         System.out.println("Whoooo hooo let get things rollin!!!!!!!!!!!");
     }
     // moves 2 spaces at a time in normal directions

@@ -16,9 +16,9 @@ public class Coordinates {
     // This one is for the Villain
     public Coordinates(int level, float villainX, float villainY) {
         mapsize = (level-1)*5+10-(level%2);
-        x = mapsize*villainX;
-        y = mapsize*villainY; 
-        
+        x = (mapsize)*(villainX);
+        y = (mapsize)*(villainY); 
+
         if(x == mapsize) x--;
         if(y == mapsize) y--;
     }

@@ -40,11 +40,11 @@ public class GameController {
                 winRound = (boolean) method.invoke(Hero);
                 System.out.println(winRound);
                 
-                displayMap();
                 if(winRound == true) {
                     map = new Map(Hero, getVillains());
                     winRound = false;
                 }
+                displayMap();
 
                 // Todo move/add villains. if hero xp 0 then generate based on level except if
                 // hero level 0(specific issue). move after each move
