@@ -30,9 +30,18 @@ public class Map {
         for (int i = 0; i < Villains.size(); i++) {
             System.out.println(Villains.get(i).getClass().getSimpleName());
             System.out.println(Villains.get(i).coordinates.getXCoordinate() + " " + Villains.get(i).coordinates.getYCoordinate());
-            ret[Villains.get(i).coordinates.getXCoordinate()][Villains.get(i).coordinates.getYCoordinate()] = "V";
+
+            if(Villains.get(i).getClass().getSimpleName().equals("DarkMage")) {
+                ret[Villains.get(i).coordinates.getXCoordinate()][Villains.get(i).coordinates.getYCoordinate()] = "M";    
+            } else if (Villains.get(i).getClass().getSimpleName().equals("Orc")) {
+                ret[Villains.get(i).coordinates.getXCoordinate()][Villains.get(i).coordinates.getYCoordinate()] = "O";
+            
+            } else {
+                ret[Villains.get(i).coordinates.getXCoordinate()][Villains.get(i).coordinates.getYCoordinate()] = "D";
+            }
+
         }
-        // This is for the Hero
+        // // This is for the Hero
         for (int i = 0; i < ret.length; i++) {
             if(i == middleY) match = true;
             for (int j = 0; j < ret[i].length; j++) {

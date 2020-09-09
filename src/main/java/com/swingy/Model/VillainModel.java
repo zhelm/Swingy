@@ -12,5 +12,4 @@ public class VillainModel {
     public VillainModel(int level, float villainX, float villainY) {
         this.coordinates = new Coordinates(level, villainX, villainY);
     }
-
 }
