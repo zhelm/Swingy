@@ -1,5 +1,6 @@
 package com.swingy.Controller;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class GameController {
     boolean winRound;
 
     Method method;
-    private ArrayList<VillainModel> observer = new ArrayList<VillainModel>();
+    private ArrayList<VillainModel> Villains = new ArrayList<VillainModel>();
 
     Map map;
     HeroModel Hero;
@@ -25,29 +26,33 @@ public class GameController {
             IllegalArgumentException, InvocationTargetException {
 
         this.getNewHero();
-        map = new Map(Hero, getVillains());
+        this.getVillains();
+
+        map = new Map(Hero, Villains);
+
         String line;
         Scanner scanner = new Scanner(System.in);
+        displayMap();
         while (!(line = scanner.nextLine()).equals("Exit")) {
             System.out.println("Say something");
 
             if (!line.equals("North") && !line.equals("West") && !line.equals("East") && !line.equals("South")
-                    && !line.equals("")) {
+            && !line.equals("")) {
                 System.out.println("Please enter a correct message and not: " + line);
             } else {
-                line = "move" + line;
-                method = Hero.getClass().getMethod(line);
-                winRound = (boolean) method.invoke(Hero);
+                winRound = Hero.coordinates.moveDirection(line);
                 System.out.println(winRound);
                 
                 if(winRound == true) {
-                    map = new Map(Hero, getVillains());
+                    Hero.gainExperience();
+                    this.getVillains();
+                    map = new Map(Hero, Villains);
                     winRound = false;
+                } else {
+                    VillainController.moveVillains(Villains, Hero);
                 }
-                displayMap();
 
-                // Todo move/add villains. if hero xp 0 then generate based on level except if
-                // hero level 0(specific issue). move after each move
+                displayMap();
             }
         }
         scanner.close();
@@ -57,17 +62,13 @@ public class GameController {
     public void getNewHero() {
         this.Hero = HeroFactory.getNewHero("null");
     }
-    public ArrayList<VillainModel> getVillains() {
-        return VillainFactory.getVillains(Hero.getLevel());
+    public void getVillains() {
+        this.Villains = VillainFactory.getVillains(Hero.getLevel());
     }
 
     // Create/Select Hero
     public void displayMap() {
         map.getMap();
-    }
-
-    public void moveHeroNorth() {
-        Hero.moveNorth();
     }
 
     // Update Hero(Model)

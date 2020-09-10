@@ -10,7 +10,7 @@ public class Joker extends HeroModel {
 
     @Override
     public void Attack() {
-        // TODO Auto-generated method stub
+        // *TODO Auto-generated method stub
 
     }
 

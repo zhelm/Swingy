@@ -24,13 +24,9 @@ public abstract class VillainFactory {
             float mult = (newMultiplier == 0) ? 1 : -1;
             
             list.add(new DarkMage(level, newMultiplier, i*(mult)));
-            // list.add(new Orc(level, i));
-            // list.add(new Demon(level, i));
+            // list.add(new Orc(level, newMultiplier, i*(mult)));
+            // list.add(new Demon(level, newMultiplier, i*(mult*-1)));
             newMultiplier = (newMultiplier == 1) ? 0 : 1;
-        }
-        System.out.println("Hello WOlrd");
-        for (VillainModel villainModel : list) {
-            System.out.println(villainModel.coordinates.getXCoordinate() + " " + villainModel.coordinates.getYCoordinate());
         }
         return list;
     }

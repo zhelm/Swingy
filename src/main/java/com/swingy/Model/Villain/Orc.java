@@ -4,9 +4,8 @@ import com.swingy.Model.VillainModel;
 
 public class Orc extends VillainModel {
 
-    public Orc(int level, float multiplier) {
-        super(level, 0.5f, 1f);
-        System.out.println("uhuhuhuh Hi!!!");
+    public Orc(int level, float multiplier, float secondMultiplier) {
+        super(level, ((multiplier)*((((float)level-1)*5+10-((float)level%2)))+(secondMultiplier*2.5f)), 0.5f*(((float)level-1)*5+10-((float)level%2)));
     }
     //basic movement
 }

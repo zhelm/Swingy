@@ -28,9 +28,6 @@ public class Map {
         
         // This is for the Villains
         for (int i = 0; i < Villains.size(); i++) {
-            System.out.println(Villains.get(i).getClass().getSimpleName());
-            System.out.println(Villains.get(i).coordinates.getXCoordinate() + " " + Villains.get(i).coordinates.getYCoordinate());
-
             if(Villains.get(i).getClass().getSimpleName().equals("DarkMage")) {
                 ret[Villains.get(i).coordinates.getXCoordinate()][Villains.get(i).coordinates.getYCoordinate()] = "M";    
             } else if (Villains.get(i).getClass().getSimpleName().equals("Orc")) {

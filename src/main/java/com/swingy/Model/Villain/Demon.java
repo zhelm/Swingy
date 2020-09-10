@@ -5,9 +5,8 @@ import com.swingy.Model.VillainModel;
 public class Demon extends VillainModel {
 
     // Its sittng ontop of each other
-    public Demon(int level, float multiplier) {
-        super(level, 1f, 1f);
-        System.out.println("Whoooo hooo let get things rollin!!!!!!!!!!!");
+    public Demon(int level, float multiplier, float secondMultiplier) {
+        super(level, (((multiplier == 0) ? 1 : 0)*((((float)level-1)*5+10-((float)level%2)))+(secondMultiplier*2.5f)), (((multiplier == 0) ? 1 : 0)*((((float)level-1)*5+10-((float)level%2)))+(secondMultiplier*2.5f)));
     }
     // moves 2 spaces at a time in normal directions
 }
