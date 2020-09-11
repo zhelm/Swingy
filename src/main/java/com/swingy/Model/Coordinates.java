@@ -2,6 +2,7 @@ package com.swingy.Model;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 
 public class Coordinates {
 
@@ -19,8 +20,8 @@ public class Coordinates {
     // This one is for the Villain
     public Coordinates(int level, float villainX, float villainY) {
         mapsize = (level - 1) * 5 + 10 - (level % 2);
-        y = villainX;
-        x = villainY;
+        x = villainX;
+        y = villainY;
 
         if (x == mapsize)
             x--;
@@ -48,8 +49,12 @@ public class Coordinates {
         this.y = this.y + n;
     }
 
-    public boolean moveNorth() {
-        this.moveYCoordinate(-1);
+    public boolean moveNorth(ArrayList<VillainModel> Villains, int amount) {
+        System.out.println("Moving North");
+        if(collisionNorthSouth(Villains, -amount)) {
+            
+        }
+        this.moveYCoordinate(-amount);
         if(getYCoordinate() < 0) {
             System.out.println("win");
             return true;
@@ -57,8 +62,14 @@ public class Coordinates {
         return false;
     }
 
-    public boolean moveSouth() {
-        this.moveYCoordinate(1);
+    public boolean moveSouth(ArrayList<VillainModel> Villains, int amount) {
+        System.out.println("Moving South");
+
+        if(collisionNorthSouth(Villains, amount)) {
+        
+        }
+
+        this.moveYCoordinate(amount);
         if(getYCoordinate() >= getMapSize()) {
             System.out.println("win");
             return true;
@@ -66,8 +77,13 @@ public class Coordinates {
         return false;
     }
 
-    public boolean moveWest() {
-        this.moveXCoordinate(-1);
+    public boolean moveWest(ArrayList<VillainModel> Villains, int amount) {
+        System.out.println("Moving West");
+        if(collisionNorthSouth(Villains, amount)) {
+        
+        }
+
+        this.moveXCoordinate(amount);
         if(getXCoordinate() < 0) {
             System.out.println("win");
             return true;
@@ -75,8 +91,13 @@ public class Coordinates {
         return false;
     }
 
-    public boolean moveEast() {
-        this.moveXCoordinate(1);
+    public boolean moveEast(ArrayList<VillainModel> Villains, int amount) {
+        System.out.println("Moving East");
+        if(collisionNorthSouth(Villains, amount)) {
+        
+        }
+
+        this.moveXCoordinate(amount);
         if(getXCoordinate() >= getMapSize()) {
             System.out.println("win");
             return true;
@@ -84,12 +105,44 @@ public class Coordinates {
         return false;
     }
 
-    public boolean moveDirection(String direction)
+    private boolean collisionNorthSouth(ArrayList<VillainModel> Villains, int direction) {
+        System.out.println(this.getXCoordinate());
+        System.out.println(this.getYCoordinate());
+        for (int i = 0; i < Villains.size(); i++) {
+            System.out.println(this);
+
+            if((getYCoordinate() + direction) == Villains.get(i).coordinates.getYCoordinate() && getXCoordinate() == Villains.get(i).coordinates.getXCoordinate()) {
+                System.out.println(Villains.get(i).coordinates.getYCoordinate());
+                System.out.println("Collision detected in North/South direction");
+            }
+        }
+        return true;
+    }
+    
+    // private boolean collisionEastWest(ArrayList<VillainModel> Villains, int direction) {
+    //     System.out.println(getYCoordinate() + direction);
+        
+    //     for (int i = 0; i < Villains.size(); i++) {
+    //         if((getYCoordinate() + direction) == Villains.get(i).coordinates.getYCoordinate()) {
+    //             System.out.println(Villains.get(i).coordinates.getYCoordinate());
+    //             System.out.println("Collision detected in North/South direction");
+    //         }
+    //     }
+    //     return true;
+    // }
+
+    //Hero uses this movement method
+    public boolean moveDirection(String direction, ArrayList<VillainModel> Villains)
             throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
             SecurityException {
         Method method;
-        method = this.getClass().getMethod("move" + direction);
-        return (boolean)method.invoke(this);
+        Class[] cArg = new Class[2];
+        cArg[0] = Villains.getClass();
+        System.out.println(cArg[0]);
+        cArg[1] = int.class;
+
+        method = this.getClass().getMethod("move" + direction, cArg);
+        return (boolean)method.invoke(this, Villains, 1);
     }
 
 

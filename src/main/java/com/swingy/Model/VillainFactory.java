@@ -16,9 +16,9 @@ public abstract class VillainFactory {
     }
 
     public static ArrayList<VillainModel> getVillainList(int level) {
+
         ArrayList<VillainModel> list = new ArrayList<VillainModel>();
-        // Todo for loop that has multiplier that will have these values stay in same position per level and expand when a level is added
-        // Either starts at max or it starts at 0
+
         float newMultiplier = (level%2 > 0) ? 1 : 0;
         for (int i = 0; i < level + 1; i++) {
             float mult = (newMultiplier == 0) ? 1 : -1;
@@ -26,10 +26,10 @@ public abstract class VillainFactory {
             list.add(new DarkMage(level, newMultiplier, i*(mult)));
             // list.add(new Orc(level, newMultiplier, i*(mult)));
             // list.add(new Demon(level, newMultiplier, i*(mult*-1)));
+        
             newMultiplier = (newMultiplier == 1) ? 0 : 1;
         }
         return list;
     }
-    // The floats are making things wierd
     
 }

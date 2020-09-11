@@ -13,7 +13,7 @@ public abstract class VillainController {
 
     public static void moveVillains(ArrayList<VillainModel> Villains, HeroModel Hero) {
         for (int i = 0; i < Villains.size(); i++) {
-            Villains.get(i).moveVillain(Hero.getXCoordinate(), Hero.getYCoordinate());
+            Villains.get(i).moveVillain(Hero.getXCoordinate(), Hero.getYCoordinate(), Villains);
         }
     }
 }

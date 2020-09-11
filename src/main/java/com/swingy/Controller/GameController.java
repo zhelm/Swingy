@@ -1,6 +1,5 @@
 package com.swingy.Controller;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -40,7 +39,7 @@ public class GameController {
             && !line.equals("")) {
                 System.out.println("Please enter a correct message and not: " + line);
             } else {
-                winRound = Hero.coordinates.moveDirection(line);
+                winRound = Hero.coordinates.moveDirection(line, Villains);
                 System.out.println(winRound);
                 
                 if(winRound == true) {
@@ -51,12 +50,10 @@ public class GameController {
                 } else {
                     VillainController.moveVillains(Villains, Hero);
                 }
-
                 displayMap();
             }
         }
         scanner.close();
-
     }
 
     public void getNewHero() {
