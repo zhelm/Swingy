@@ -2,10 +2,12 @@ package com.swingy.Model;
 
 import java.util.ArrayList;
 
+import com.swingy.Interfaces.ICharacter;
+
 /**
  * HeroModel
  */
-public abstract class HeroModel {
+public abstract class HeroModel implements ICharacter {
 
     private String Name;
     private int Level = 3;
@@ -56,7 +58,7 @@ public abstract class HeroModel {
         this.updateCoordinates();
     }
 
-    public abstract void Attack();
+    public abstract void Attack(Object Villain);
     public abstract void Run();
     public abstract void Move(String direction);
 

@@ -2,7 +2,9 @@ package com.swingy.Model;
 
 import java.util.ArrayList;
 
-public class VillainModel {
+import com.swingy.Interfaces.ICharacter;
+
+public abstract class VillainModel implements ICharacter {
 
     private String Name;
     
@@ -15,21 +17,22 @@ public class VillainModel {
         this.coordinates = new Coordinates(level, villainX, villainY);
     }
 
+    // This is TOTALLY NOT SOLID
     public void moveVillain(int x, int y, ArrayList<VillainModel> Villains) {
         String Type = this.getClass().getSimpleName();
-        // Todo add collision
 
+        //Already check if a collision happens here. Lets not do that here
         if(Type.equals("DarkMage")) {
-            if(this.coordinates.getYCoordinate() > x) {
-                this.coordinates.moveNorth(Villains, -1);
+            if(this.coordinates.getYCoordinate() > y && !checkHeroCollision(x, y, 0, -1)) {
+                this.coordinates.moveNorth(Villains, 1);
             }
-            else if(this.coordinates.getXCoordinate() > y) {
-                this.coordinates.moveWest(Villains, -1);
+            else if(this.coordinates.getXCoordinate() > x && !checkHeroCollision(x, y, -1, 0)) {
+                this.coordinates.moveWest(Villains, 1);
             }
-            else if (this.coordinates.getYCoordinate() < x) {
+            else if (this.coordinates.getYCoordinate() < y && !checkHeroCollision(x, y, 0, 1)) {
                 this.coordinates.moveSouth(Villains, 1);
             }
-            else if(this.coordinates.getXCoordinate() < y) {
+            else if(this.coordinates.getXCoordinate() < x && !checkHeroCollision(x, y, 1, 0)) {
                 this.coordinates.moveEast(Villains, 1);
             }
         }
@@ -53,6 +56,14 @@ public class VillainModel {
         // }
     }
 
+    private boolean checkHeroCollision(int HeroX, int HeroY, int amountX, int amountY) {
+        if((this.coordinates.getXCoordinate() + amountX) == HeroX && (this.coordinates.getYCoordinate() + amountY) == HeroY) {
+            //Ask what the user wants to do. Then either attack or let user run.
+            System.out.println("Going to attack the Hero");
+            return true;
+        }
+        return false;    
+    }
    
 
     // private boolean collisionWestEast(ArrayList<VillainModel> Villains, int direction) {
@@ -64,4 +75,7 @@ public class VillainModel {
 
     //     }
     // }
+
+    public abstract void Attack(Object Enemy);
+    public abstract void Run();
 }

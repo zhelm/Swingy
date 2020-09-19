@@ -9,10 +9,12 @@ import com.swingy.Model.VillainModel;
 public class Map {
     HeroModel Hero;
     ArrayList<VillainModel> Villains;
+    public int mapSize; 
 
     public Map(HeroModel Hero, ArrayList<VillainModel> Villains) {
         this.Hero = Hero;
         this.Villains = Villains;
+        mapSize = (this.Hero.getLevel()-1)*5+10-(this.Hero.getLevel()%2);
     }
 
     public String[][] getMap() {
@@ -29,12 +31,12 @@ public class Map {
         // This is for the Villains
         for (int i = 0; i < Villains.size(); i++) {
             if(Villains.get(i).getClass().getSimpleName().equals("DarkMage")) {
-                ret[Villains.get(i).coordinates.getXCoordinate()][Villains.get(i).coordinates.getYCoordinate()] = "M";    
+                ret[Villains.get(i).coordinates.getYCoordinate()][Villains.get(i).coordinates.getXCoordinate()] = "M";    
             } else if (Villains.get(i).getClass().getSimpleName().equals("Orc")) {
-                ret[Villains.get(i).coordinates.getXCoordinate()][Villains.get(i).coordinates.getYCoordinate()] = "O";
+                ret[Villains.get(i).coordinates.getYCoordinate()][Villains.get(i).coordinates.getXCoordinate()] = "O";
             
             } else {
-                ret[Villains.get(i).coordinates.getXCoordinate()][Villains.get(i).coordinates.getYCoordinate()] = "D";
+                ret[Villains.get(i).coordinates.getYCoordinate()][Villains.get(i).coordinates.getXCoordinate()] = "D";
             }
 
         }
@@ -44,7 +46,8 @@ public class Map {
             for (int j = 0; j < ret[i].length; j++) {
                 if(j == middleX && match == true) {
                     match = false;
-                System.out.print("H" + ' ');
+                    ret[i][j] = "H";
+                    System.out.print("H" + ' ');
                 } else {
                     System.out.print(ret[i][j] + ' ');
                 }

@@ -8,7 +8,7 @@ public class Thief extends HeroModel {
     }
 
     @Override
-    public void Attack() {
+    public void Attack(Object Enemy) {
         // TODO Auto-generated method stub
 
     }

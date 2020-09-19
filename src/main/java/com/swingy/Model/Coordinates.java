@@ -5,7 +5,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 public class Coordinates {
-
+    
+    private VillainModel ret;
     private float x;
     private float y;
     private int mapsize;
@@ -49,90 +50,59 @@ public class Coordinates {
         this.y = this.y + n;
     }
 
-    public boolean moveNorth(ArrayList<VillainModel> Villains, int amount) {
+    public VillainModel moveNorth(ArrayList<VillainModel> Villains, int amount) {
         System.out.println("Moving North");
-        if(collisionNorthSouth(Villains, -amount)) {
-            
+        if((ret = collisionNorthSouth(Villains, 0, -amount)) == null) {
+            this.moveYCoordinate(-amount);
         }
-        this.moveYCoordinate(-amount);
-        if(getYCoordinate() < 0) {
-            System.out.println("win");
-            return true;
-        }
-        return false;
+        return ret;
     }
 
-    public boolean moveSouth(ArrayList<VillainModel> Villains, int amount) {
+    public VillainModel moveSouth(ArrayList<VillainModel> Villains, int amount) {
         System.out.println("Moving South");
-
-        if(collisionNorthSouth(Villains, amount)) {
-        
+        if((ret = collisionNorthSouth(Villains, 0, -amount)) == null) {
+            this.moveYCoordinate(amount);
         }
-
-        this.moveYCoordinate(amount);
-        if(getYCoordinate() >= getMapSize()) {
-            System.out.println("win");
-            return true;
-        }
-        return false;
+        return ret;
     }
 
-    public boolean moveWest(ArrayList<VillainModel> Villains, int amount) {
+    public VillainModel moveWest(ArrayList<VillainModel> Villains, int amount) {
         System.out.println("Moving West");
-        if(collisionNorthSouth(Villains, amount)) {
-        
+        if((ret = collisionNorthSouth(Villains, 0, -amount)) == null) {
+            this.moveXCoordinate(-amount);
         }
-
-        this.moveXCoordinate(amount);
-        if(getXCoordinate() < 0) {
-            System.out.println("win");
-            return true;
-        }
-        return false;
+        return ret;
     }
 
-    public boolean moveEast(ArrayList<VillainModel> Villains, int amount) {
+    public VillainModel moveEast(ArrayList<VillainModel> Villains, int amount) {
         System.out.println("Moving East");
-        if(collisionNorthSouth(Villains, amount)) {
-        
+        if((ret = collisionNorthSouth(Villains, 0, -amount)) == null) {
+            this.moveXCoordinate(amount);
         }
-
-        this.moveXCoordinate(amount);
-        if(getXCoordinate() >= getMapSize()) {
-            System.out.println("win");
-            return true;
-        }
-        return false;
+        return ret;
     }
 
-    private boolean collisionNorthSouth(ArrayList<VillainModel> Villains, int direction) {
-        System.out.println(this.getXCoordinate());
-        System.out.println(this.getYCoordinate());
+    private VillainModel collisionNorthSouth(ArrayList<VillainModel> Villains, int x, int y) {
         for (int i = 0; i < Villains.size(); i++) {
-            System.out.println(this);
-
-            if((getYCoordinate() + direction) == Villains.get(i).coordinates.getYCoordinate() && getXCoordinate() == Villains.get(i).coordinates.getXCoordinate()) {
-                System.out.println(Villains.get(i).coordinates.getYCoordinate());
-                System.out.println("Collision detected in North/South direction");
+            if((this.getXCoordinate() + x) == Villains.get(i).coordinates.getXCoordinate() && (this.getYCoordinate() + y) == Villains.get(i).coordinates.getYCoordinate()) {
+                System.out.println(this.getClass());
+                System.out.println("<---------------------- Collision Detected ---------------------->");
+                return Villains.get(i);
             }
         }
-        return true;
+        return null;
     }
     
-    // private boolean collisionEastWest(ArrayList<VillainModel> Villains, int direction) {
-    //     System.out.println(getYCoordinate() + direction);
-        
-    //     for (int i = 0; i < Villains.size(); i++) {
-    //         if((getYCoordinate() + direction) == Villains.get(i).coordinates.getYCoordinate()) {
-    //             System.out.println(Villains.get(i).coordinates.getYCoordinate());
-    //             System.out.println("Collision detected in North/South direction");
-    //         }
-    //     }
-    //     return true;
-    // }
+
+    public boolean isWin() {
+        if(getXCoordinate() >= getMapSize() || getXCoordinate() < 0 || getYCoordinate() >= getMapSize() || getYCoordinate() < 0) {
+            return true;
+        }
+        return false;
+    }
 
     //Hero uses this movement method
-    public boolean moveDirection(String direction, ArrayList<VillainModel> Villains)
+    public VillainModel moveDirection(String direction, ArrayList<VillainModel> Villains)
             throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
             SecurityException {
         Method method;
@@ -140,9 +110,9 @@ public class Coordinates {
         cArg[0] = Villains.getClass();
         System.out.println(cArg[0]);
         cArg[1] = int.class;
-
+        
         method = this.getClass().getMethod("move" + direction, cArg);
-        return (boolean)method.invoke(this, Villains, 1);
+        return (VillainModel)method.invoke(this, Villains, 1);
     }
 
 

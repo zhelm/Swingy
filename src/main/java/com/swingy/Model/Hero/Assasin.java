@@ -3,6 +3,7 @@ package com.swingy.Model.Hero;
 import java.util.ArrayList;
 
 import com.swingy.Model.HeroModel;
+import com.swingy.Model.VillainModel;
 
 public class Assasin extends HeroModel {
 
@@ -15,8 +16,8 @@ public class Assasin extends HeroModel {
     }
 
     @Override
-    public void Attack() {
-
+    public void Attack(Object Villain) {
+        System.out.println("Ahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
     }
 
     @Override
