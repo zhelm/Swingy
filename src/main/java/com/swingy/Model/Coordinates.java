@@ -60,7 +60,7 @@ public class Coordinates {
 
     public VillainModel moveSouth(ArrayList<VillainModel> Villains, int amount) {
         System.out.println("Moving South");
-        if((ret = collisionNorthSouth(Villains, 0, -amount)) == null) {
+        if((ret = collisionNorthSouth(Villains, 0, amount)) == null) {
             this.moveYCoordinate(amount);
         }
         return ret;
@@ -68,7 +68,7 @@ public class Coordinates {
 
     public VillainModel moveWest(ArrayList<VillainModel> Villains, int amount) {
         System.out.println("Moving West");
-        if((ret = collisionNorthSouth(Villains, 0, -amount)) == null) {
+        if((ret = collisionNorthSouth(Villains, -amount, 0)) == null) {
             this.moveXCoordinate(-amount);
         }
         return ret;
@@ -76,7 +76,7 @@ public class Coordinates {
 
     public VillainModel moveEast(ArrayList<VillainModel> Villains, int amount) {
         System.out.println("Moving East");
-        if((ret = collisionNorthSouth(Villains, 0, -amount)) == null) {
+        if((ret = collisionNorthSouth(Villains, amount, 0)) == null) {
             this.moveXCoordinate(amount);
         }
         return ret;

@@ -7,6 +7,10 @@ public class Warrior extends HeroModel {
         super(Name);
     }
 
+    public static Warrior getWarrior() {
+        return new Warrior("Name");
+    }
+
     @Override
     public void Attack(Object Enemy) {
         // TODO Auto-generated method stub

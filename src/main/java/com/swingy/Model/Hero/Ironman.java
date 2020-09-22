@@ -14,6 +14,10 @@ public class Ironman extends HeroModel {
 
     }
 
+    public static Ironman getIronman() {
+        return new Ironman("Name");
+    }
+
     @Override
     public void Run() {
         // TODO Auto-generated method stub

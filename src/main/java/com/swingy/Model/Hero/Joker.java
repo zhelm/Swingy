@@ -8,6 +8,10 @@ public class Joker extends HeroModel {
         super(Name);
     }
 
+    public static Joker getJoker() {
+        return new Joker("Name");
+    }
+
     @Override
     public void Attack(Object Enemy) {
         // *TODO Auto-generated method stub

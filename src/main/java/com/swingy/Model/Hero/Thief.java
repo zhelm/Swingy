@@ -7,6 +7,10 @@ public class Thief extends HeroModel {
         super(Name);
     }
 
+    public static Thief getThief() {
+        return new Thief("Name");
+    }
+
     @Override
     public void Attack(Object Enemy) {
         // TODO Auto-generated method stub

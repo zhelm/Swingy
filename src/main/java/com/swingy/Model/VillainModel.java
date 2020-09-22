@@ -6,14 +6,12 @@ import com.swingy.Interfaces.ICharacter;
 
 public abstract class VillainModel implements ICharacter {
 
-    private String Name;
-    
     protected int Attack;
     protected int Defence;
     protected int HitPoints;
     public Coordinates coordinates;
 
-    public VillainModel(int level, float villainX, float villainY) {
+    public VillainModel(String name, int level, float villainX, float villainY) {
         this.coordinates = new Coordinates(level, villainX, villainY);
     }
 
