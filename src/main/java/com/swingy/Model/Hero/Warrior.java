@@ -3,12 +3,12 @@ package com.swingy.Model.Hero;
 import com.swingy.Model.HeroModel;
 
 public class Warrior extends HeroModel {
-    public Warrior(String Name) {
-        super(Name);
+    public Warrior(String Name, int level) {
+        super(Name, level);
     }
 
-    public static Warrior getWarrior() {
-        return new Warrior("Name");
+    public static Warrior getWarrior(String name, int level) {
+        return new Warrior(name, level);
     }
 
     @Override

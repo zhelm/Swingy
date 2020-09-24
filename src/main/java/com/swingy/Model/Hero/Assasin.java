@@ -6,16 +6,16 @@ import com.swingy.Model.HeroModel;
 
 public class Assasin extends HeroModel {
 
-    public Assasin(String Name) {
-        super(Name);
+    public Assasin(String Name, int level) {
+        super(Name, level);
         this.HitPoints = 200;
         this.Attack = 150;
         this.Defence = 2;
         this.Artifacts = new ArrayList<String>();
     }
 
-    public static Assasin getAssasin() {
-        return new Assasin("Name");
+    public static Assasin getAssasin(String name, int level) {
+        return new Assasin(name, level);
     }
 
     @Override

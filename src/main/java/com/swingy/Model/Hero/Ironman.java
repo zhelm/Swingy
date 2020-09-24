@@ -4,8 +4,8 @@ import com.swingy.Model.HeroModel;
 
 public class Ironman extends HeroModel {
 
-    public Ironman(String Name) {
-        super(Name);
+    public Ironman(String Name, int level) {
+        super(Name, level);
     }
     
     @Override
@@ -14,8 +14,8 @@ public class Ironman extends HeroModel {
 
     }
 
-    public static Ironman getIronman() {
-        return new Ironman("Name");
+    public static Ironman getIronman(String name, int level) {
+        return new Ironman(name, level);
     }
 
     @Override

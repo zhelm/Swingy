@@ -4,12 +4,12 @@ import com.swingy.Model.HeroModel;
 
 public class Joker extends HeroModel {
 
-    public Joker(String Name) {
-        super(Name);
+    public Joker(String Name, int level) {
+        super(Name, level);
     }
 
-    public static Joker getJoker() {
-        return new Joker("Name");
+    public static Joker getJoker(String name, int level) {
+        return new Joker(name, level);
     }
 
     @Override

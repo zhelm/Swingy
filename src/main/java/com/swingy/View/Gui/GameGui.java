@@ -47,17 +47,19 @@ public class GameGui extends JFrame implements ActionListener {
   
     public String updateMap(Map map) {
         this.map = map;
-        String[][] mapArray = this.map.getMap();
         String ret = "";
-        for (int i = 0; i < mapArray.length; i++) {
-            for (int j = 0; j < mapArray[i].length; j++) {
-                if(!mapArray[i][j].equals("*")) {
-                    ret = ret + mapArray[i][j] + " ";
-                } else {
-                    ret = ret + mapArray[i][j] + "  ";
+        if(map.Hero != null) {
+            String[][] mapArray = this.map.getMap();
+            for (int i = 0; i < mapArray.length; i++) {
+                for (int j = 0; j < mapArray[i].length; j++) {
+                    if(!mapArray[i][j].equals("*")) {
+                        ret = ret + mapArray[i][j] + " ";
+                    } else {
+                        ret = ret + mapArray[i][j] + "  ";
+                    }
                 }
+                ret = ret + "\n";
             }
-            ret = ret + "\n";
         }
         gameText.setText(ret); 
         return ret;
@@ -120,7 +122,8 @@ public class GameGui extends JFrame implements ActionListener {
         if(e.getActionCommand() == "Assasin" || e.getActionCommand() == "Ironman" || e.getActionCommand() == "Thief" || e.getActionCommand() == "Warrior" || e.getActionCommand() == "Joker") {
             GameController.type = e.getActionCommand();
         }
-        if (s.equals("Next")) {
+        if (s.equals("Next") || s.equals("Create")) {
+            updateMap(map);
             f.setContentPane(Pages.get(i++));
             f.revalidate();
             f.repaint();
@@ -164,7 +167,7 @@ public class GameGui extends JFrame implements ActionListener {
         jokerButton.addActionListener(this);
         warriorButton.addActionListener(this);
 
-        JButton Next = new JButton("Next");
+        JButton Create = new JButton("Create");
         JPanel CreateHero = new JPanel(); 
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -187,11 +190,11 @@ public class GameGui extends JFrame implements ActionListener {
         CreateHero.add(warriorButton, gbc);
 
         CreateHero.add(HeroName, gbc);
-        CreateHero.add(Next, gbc);
+        CreateHero.add(Create, gbc);
 
         //Order matters
-        Next.addActionListener(this.gameControlleListener);
-        Next.addActionListener(this);
+        Create.addActionListener(this.gameControlleListener);
+        Create.addActionListener(this);
 
         return CreateHero;
     }

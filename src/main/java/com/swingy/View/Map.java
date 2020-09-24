@@ -7,14 +7,16 @@ import com.swingy.Model.HeroModel;
 import com.swingy.Model.VillainModel;
 
 public class Map {
-    HeroModel Hero;
+    public HeroModel Hero;
     ArrayList<VillainModel> Villains;
     public int mapSize; 
 
     public Map(HeroModel Hero, ArrayList<VillainModel> Villains) {
-        this.Hero = Hero;
-        this.Villains = Villains;
-        mapSize = (this.Hero.getLevel()-1)*5+10-(this.Hero.getLevel()%2);
+        if(Hero != null) {
+            this.Hero = Hero;
+            this.Villains = Villains;
+            mapSize = (this.Hero.getLevel()-1)*5+10-(this.Hero.getLevel()%2);
+        }
     }
 
     public String[][] getMap() {

@@ -10,17 +10,26 @@ import com.swingy.Interfaces.ICharacter;
 public abstract class HeroModel implements ICharacter {
 
     private String Name;
-    private int Level = 3;
-    private int Experience = 0;
-
+    private int Level;
+    private int Experience;
+    private int heroId;
+    public static int id;
     public Coordinates coordinates = new Coordinates(getLevel());
     protected int Attack;
     protected int Defence;
     protected int HitPoints;
+    protected int Weapon;
+    protected int Armor;
+    protected int Helm;
+    
     protected ArrayList<String> Artifacts;
     
-    public HeroModel(String Name) {
+    public HeroModel(String Name, int level) {
         this.Name = Name;
+        this.Level = level;
+        this.Experience = 0;
+        heroId = id;
+        id++;
     }
 
     public String getName() {
@@ -40,7 +49,14 @@ public abstract class HeroModel implements ICharacter {
         } else {
             this.updateCoordinates();
         }
+        HeroFactory.createHeroProfile(this);
+        
     }
+
+    public int getExperience() {
+        return this.Experience;
+    }
+
     public int getXCoordinate() {
         return this.coordinates.getXCoordinate();
     }
@@ -54,8 +70,25 @@ public abstract class HeroModel implements ICharacter {
     }
 
     public void gainLevel() {
+        HeroFactory.createHeroProfile(this);
         this.Level++;
         this.updateCoordinates();
+    }
+
+    public int getId(){
+        return this.heroId;
+    }
+
+    public int getWeapon() {
+        return this.Weapon;
+    }
+
+    public int getHelm() {
+        return this.Helm;
+    }
+
+    public int getArmor() {
+        return this.Armor;
     }
 
     public abstract void Attack(Object Villain);
