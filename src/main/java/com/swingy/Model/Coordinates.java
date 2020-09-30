@@ -106,7 +106,7 @@ public class Coordinates {
             throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
             SecurityException {
         Method method;
-        Class[] cArg = new Class[2];
+        var cArg = new Class[2];
         cArg[0] = Villains.getClass();
         System.out.println(cArg[0]);
         cArg[1] = int.class;

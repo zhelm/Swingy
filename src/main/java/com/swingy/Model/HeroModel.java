@@ -7,14 +7,15 @@ import com.swingy.Interfaces.ICharacter;
 /**
  * HeroModel
  */
-public abstract class HeroModel implements ICharacter {
+public class HeroModel implements ICharacter {
 
     private String Name;
+    private String Type;
     private int Level;
     private int Experience;
     private int heroId;
     public static int id;
-    public Coordinates coordinates = new Coordinates(getLevel());
+    public Coordinates coordinates;
     protected int Attack;
     protected int Defence;
     protected int HitPoints;
@@ -24,12 +25,25 @@ public abstract class HeroModel implements ICharacter {
     
     protected ArrayList<String> Artifacts;
     
-    public HeroModel(String Name, int level) {
+    public HeroModel(String Name) {
         this.Name = Name;
-        this.Level = level;
+        this.Level = 0;
         this.Experience = 0;
         heroId = id;
         id++;
+        this.coordinates = new Coordinates(getLevel());
+    }
+
+    public HeroModel(String Name, int level, int id, int Experience, int Weapon, int Armor, int Helm) {
+        this.Name = Name;
+        this.Level = level;
+        this.Experience = Experience;
+        this.heroId = id;
+        this.Experience  = Experience;
+        this.Weapon = Weapon;
+        this.Armor = Armor;
+        this.Helm = Helm;
+        this.coordinates = new Coordinates(getLevel());
     }
 
     public String getName() {
@@ -91,9 +105,11 @@ public abstract class HeroModel implements ICharacter {
         return this.Armor;
     }
 
-    public abstract void Attack(Object Villain);
-    public abstract void Run();
-    public abstract void Move(String direction);
+    public void setType(String Type) {
+        this.Type = Type;
+    }
+
+    
 
 
 

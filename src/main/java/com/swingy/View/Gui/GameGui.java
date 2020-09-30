@@ -7,6 +7,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import com.swingy.Controller.GameController;
+import com.swingy.Model.HeroFactory;
 import com.swingy.View.Map;
 
 
@@ -25,6 +26,9 @@ public class GameGui extends JFrame implements ActionListener {
     public int i = 0;
     public JTextArea gameText = new JTextArea(" ", 0, 0);
     public LinkedList<JPanel> Pages = new LinkedList<JPanel>();
+
+    private JButton Create = new JButton("Create");
+
 
     // JButton 
   
@@ -120,14 +124,17 @@ public class GameGui extends JFrame implements ActionListener {
             GameController.name = HeroName.getText();
         }
         if(e.getActionCommand() == "Assasin" || e.getActionCommand() == "Ironman" || e.getActionCommand() == "Thief" || e.getActionCommand() == "Warrior" || e.getActionCommand() == "Joker") {
+            System.out.println("Hello");
+            Create.setText("Create");
             GameController.type = e.getActionCommand();
-        }
-        if (s.equals("Next") || s.equals("Create")) {
+        } else if (s.equals("Next") || s.equals("Create") || s.equals("Select")) {
             updateMap(map);
             f.setContentPane(Pages.get(i++));
             f.revalidate();
             f.repaint();
         } else {
+            GameController.selectedId = Character.getNumericValue(s.charAt(0));
+            Create.setText("Select");
         }
     }
 
@@ -145,7 +152,22 @@ public class GameGui extends JFrame implements ActionListener {
     }
     
     private JPanel getCreatehero() {
+        // ^[0-9]+ [a-z,A-Z,0-9]+ (Assasin|Warrior|Thief|Ironman|Joker) [0-9]+ [0-9]+
         
+        JPanel CreateHero = new JPanel(); 
+        String[][] selectHero = HeroFactory.updateHeroProfile();
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        CreateHero.setLayout(new GridBagLayout());
+        
+        for (String[] strings : selectHero) {
+            JRadioButton addition = new JRadioButton();
+            addition.setText(strings[0] + ". " + strings[1] + " the " + strings[2]);
+            addition.addActionListener(this);
+            buttonGroup.add(addition);
+            CreateHero.add(addition, gbc);
+        }
         
         assasinButton = new JRadioButton(); 
         warriorButton = new JRadioButton(); 
@@ -167,13 +189,6 @@ public class GameGui extends JFrame implements ActionListener {
         jokerButton.addActionListener(this);
         warriorButton.addActionListener(this);
 
-        JButton Create = new JButton("Create");
-        JPanel CreateHero = new JPanel(); 
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        CreateHero.setLayout(new GridBagLayout());
-
 
         buttonGroup.add(assasinButton);
         buttonGroup.add(ironmanButton);
@@ -192,7 +207,8 @@ public class GameGui extends JFrame implements ActionListener {
         CreateHero.add(HeroName, gbc);
         CreateHero.add(Create, gbc);
 
-        //Order matters
+        // Order matters
+        // Updates data first then repaints
         Create.addActionListener(this.gameControlleListener);
         Create.addActionListener(this);
 
@@ -200,10 +216,16 @@ public class GameGui extends JFrame implements ActionListener {
     }
     
     private JPanel getGame() {
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
         JButton West, North, East, South;
         updateMap(map);
         gameText.setEditable(false);
         JPanel Game = new JPanel();
+        JLabel Health = new JLabel("Health: ");
+        JLabel Attack = new JLabel("");
+        JLabel Defence = new JLabel("");
         
         West = new JButton("West");
         North = new JButton("North");
@@ -215,7 +237,8 @@ public class GameGui extends JFrame implements ActionListener {
         East.addActionListener(gameControlleListener); 
         South.addActionListener(gameControlleListener); 
 
-        Game.add(gameText); 
+
+        Game.add(gameText, gbc); 
         Game.add(West); 
         Game.add(North); 
         Game.add(East); 

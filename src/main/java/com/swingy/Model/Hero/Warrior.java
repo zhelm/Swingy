@@ -3,14 +3,25 @@ package com.swingy.Model.Hero;
 import com.swingy.Model.HeroModel;
 
 public class Warrior extends HeroModel {
-    public Warrior(String Name, int level) {
-        super(Name, level);
+    public Warrior(String Name) {
+        super(Name);
     }
 
-    public static Warrior getWarrior(String name, int level) {
-        return new Warrior(name, level);
+    public Warrior(String Name, int level, int id, int Experience, int Weapon, int Armor, int Helm) {
+        super(Name, level, id, Experience, Weapon, Armor, Helm);
     }
 
+
+
+    public static Warrior getNewWarrior(String name) {
+        return new Warrior(name);
+    }
+
+    public static Warrior getWarrior(String Name, int level, int id, int Experience, int Weapon, int Armor, int Helm) {
+        return new Warrior(Name, level, id, Experience, Weapon, Armor, Helm);
+    }
+
+    
     @Override
     public void Attack(Object Enemy) {
         // TODO Auto-generated method stub

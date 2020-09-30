@@ -4,18 +4,26 @@ import com.swingy.Model.HeroModel;
 
 public class Ironman extends HeroModel {
 
-    public Ironman(String Name, int level) {
-        super(Name, level);
+    public Ironman(String Name) {
+        super(Name);
     }
     
+    public Ironman(String Name, int level, int id, int Experience, int Weapon, int Armor, int Helm) {
+        super(Name, level, id, Experience, Weapon, Armor, Helm);
+    }
+
+
     @Override
     public void Attack(Object Enemy) {
         // TODO Auto-generated method stub
 
     }
-
-    public static Ironman getIronman(String name, int level) {
-        return new Ironman(name, level);
+    
+    public static Ironman getNewIronman(String name) {
+        return new Ironman(name);
+    }
+    public static Ironman getIronman(String Name, int level, int id, int Experience, int Weapon, int Armor, int Helm) {
+        return new Ironman(Name, level, id, Experience, Weapon, Armor, Helm);
     }
 
     @Override

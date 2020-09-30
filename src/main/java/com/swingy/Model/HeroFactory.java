@@ -20,23 +20,41 @@ public abstract class HeroFactory {
 
 
 
-    public static HeroModel getNewHero(String name, String type, int level) {
+    public static HeroModel getNewHero(String name, String type) {
         HeroModel Hero = null;
         if(type.equals("Assasin")) {
-            Hero = Assasin.getAssasin(name, level);
+            Hero = Assasin.getNewAssasin(name);
         } else if(type.equals("Warrior")) {
-            Hero = Warrior.getWarrior(name, level);
+            Hero = Warrior.getNewWarrior(name);
         } else if(type.equals("Ironman")) {
-            Hero = Ironman.getIronman(name, level);
+            Hero = Ironman.getNewIronman(name);
         } else if(type.equals("Thief")) {
-            Hero = Thief.getThief(name, level);
+            Hero = Thief.getNewThief(name);
         } else if(type.equals("Joker")) {
-            Hero = Joker.getJoker(name, level);
+            Hero = Joker.getNewJoker(name);
         }
         createHeroProfile(Hero);
         updateHeroProfile();
         return Hero;
     }
+
+    public static HeroModel getHero(String Name, String type, int level, int id, int Experience, int Weapon, int Armor, int Helm) {
+        HeroModel Hero = null;
+        // TODO Change all of this to one thing
+        if(type.equals("Assasin")) {
+            Hero = Assasin.getAssasin(Name, level, id, Experience, Weapon, Armor, Helm);
+        } else if(type.equals("Warrior")) {
+            Hero = Warrior.getWarrior(Name, level, id, Experience, Weapon, Armor, Helm);
+        } else if(type.equals("Ironman")) {
+            Hero = Ironman.getIronman(Name, level, id, Experience, Weapon, Armor, Helm);
+        } else if(type.equals("Thief")) {
+            Hero = Thief.getThief(Name, level, id, Experience, Weapon, Armor, Helm);
+        } else if(type.equals("Joker")) {
+            Hero = Joker.getJoker(Name, level, id, Experience, Weapon, Armor, Helm);
+        }
+        return Hero;
+    }
+
 
     public static void createHeroProfile(HeroModel Hero) {
         // Id Name Type lvl experience Weapon Armor Helm
@@ -119,6 +137,5 @@ public abstract class HeroFactory {
         } catch (Exception e) {
             //TODO: handle exception
         }
-            
     }
 }

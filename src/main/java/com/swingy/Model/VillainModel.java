@@ -63,17 +63,20 @@ public abstract class VillainModel implements ICharacter {
         return false;    
     }
    
-
-    // private boolean collisionWestEast(ArrayList<VillainModel> Villains, int direction) {
-    //     for (int i = 0; i < Villains.size(); i++) {
-    //         if((this.coordinates.getXCoordinate() + direction) == Villains.get(i).coordinates.getXCoordinate()) {
-    //             System.out.println("Collision detected in West/East direction");
-    //         }
-    //         return true;
-
-    //     }
-    // }
-
     public abstract void Attack(Object Enemy);
     public abstract void Run();
+
+    public int getHitpoints() {
+        return this.HitPoints;
+    }
+    public int getDefence() {
+        return this.Defence;
+    }
+    public int getAttack() {
+        return this.Attack;
+    }
+
+    public void recieveDamage(int amount) {
+        this.HitPoints = this.HitPoints - amount;
+    }
 }

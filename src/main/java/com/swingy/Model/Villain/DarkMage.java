@@ -6,6 +6,8 @@ public class DarkMage extends VillainModel {
 
     public DarkMage(int level, float multiplier, float secondMultiplier) {
         super("DarkMage", level, 0.5f*(((float)level-1)*5+10-((float)level%2)), ((multiplier)*((((float)level-1)*5+10-((float)level%2)))+(secondMultiplier*2.5f)));
+        this.HitPoints = 40;
+        this.Attack = 10;
     }
 
     @Override
