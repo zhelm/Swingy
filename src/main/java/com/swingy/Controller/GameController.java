@@ -2,11 +2,8 @@ package com.swingy.Controller;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,6 +12,7 @@ import com.swingy.Model.HeroFactory;
 import com.swingy.Model.HeroModel;
 import com.swingy.Model.VillainFactory;
 import com.swingy.Model.VillainModel;
+import com.swingy.Model.SwingyDatabase.SwingyDatabase;
 import com.swingy.View.Map;
 import com.swingy.View.Gui.GameGui;
 
@@ -22,7 +20,9 @@ import java.awt.event.*;
 import java.io.IOException;
 
 public class GameController implements ActionListener {
-    // Hero names with spaces 
+    public static boolean collision = false;
+    public static int option = 0;
+    // Hero names with spaces
     VillainModel Villain;
     Method method;
     private ArrayList<VillainModel> Villains = new ArrayList<VillainModel>();
@@ -33,39 +33,19 @@ public class GameController implements ActionListener {
     Boolean isConsole = false;
     Scanner scanner = new Scanner(System.in);
 
-
     int i = 0;
     // Hero Creation and selection
     // Console
     public static String name;
-    public static String type;
+    public static int type;
     // Gui
     public static int selectedId;
 
     public GameController() throws NoSuchMethodException, SecurityException, IllegalAccessException,
-            IllegalArgumentException, InvocationTargetException, IOException {
-            // ^[0-9]+ [a-z,A-Z,0-9]+ (Assasin|Warrior|Thief|Ironman|Joker) [0-9]+ [0-9]+ [0-9]+ [0-9]+ [0-9]+\n?$
-            // file validation and select herolist
-        this.setLargestId();
+            IllegalArgumentException, InvocationTargetException, IOException, SQLException {
+        map = Map.thisMap();
+        map.Villains = Villains;
 
-        List<String> read = Collections.emptyList();
-        read = Files.readAllLines(Paths.get("./src/main/java/com/swingy/Heroes/Heroes.txt"));
-
-        String[] lines = new String[read.size()];
-        lines = read.toArray(lines);
-
-        for (int i = 0; i < lines.length; i++) {
-            System.out.println(lines[i]);
-            Pattern pattern = Pattern.compile("^[0-9]+ [a-z,A-Z,0-9]+ (Assasin|Warrior|Thief|Ironman|Joker) [0-9]+ [0-9]+ [0-9]+ [0-9]+ [0-9]+\\n?$");
-            Matcher matcher = pattern.matcher(lines[i]);
-            boolean matchFound = matcher.find();
-            // if(!matchFound) {
-            //     System.err.println("ERROR: File has incorrect content");
-            //     return ;
-            // }
-        }
-
-        map = new Map(Hero, Villains);
         gui = new GameGui(map, this);
         gui.main(map);
 
@@ -75,24 +55,26 @@ public class GameController implements ActionListener {
         // Create Hero
         // Play game
         System.out.println("Would you like to select or create a new hero?");
-        while (!(line = scanner.nextLine()).equals("Exit")) {
-            if(line.equals("Select") && i == 0) {
-                selectHeroConsole();
-                i++;
-            } else if(line.equals("Create") && i == 0) {
-                createHeroConsole();
-                i++;
-                System.out.println("Are you ready?");
-            } else if(line.equals("Yes") && i == 1) {
-                map.getMap();
-                i++;
-            } else if(i > 1) {
-                updateView(line);
-                i++;
-            } else {
-                System.out.println("Invalid command!!");
-            }
-        }
+        // while (!(line = scanner.nextLine()).equals("Exit")) {
+        //     if ((line.equals("Attack") || line.equals("Run")) && collision) {
+        //         simulation(line);
+        //     } else if (line.equals("Select") && i == 0) {
+        //         selectHeroConsole(scanner);
+        //         i++;
+        //     } else if (line.equals("Create") && i == 0) {
+        //         createHeroConsole();
+        //         i++;
+        //         System.out.println("Are you ready?");
+        //     } else if (line.equals("Yes") && i == 1) {
+        //         map.getMap();
+        //         i++;
+        //     } else if (i > 1) {
+        //         updateView(line);
+        //         i++;
+        //     } else {
+        //         System.out.println("Invalid command!!");
+        //     }
+        // }
         scanner.close();
     }
 
@@ -105,14 +87,44 @@ public class GameController implements ActionListener {
             if (Villain == null && Hero.coordinates.isWin()) {
                 Hero.gainExperience();
                 this.getVillains();
-                map = new Map(Hero, Villains);
+                setMap();
             } else if (Villain != null && !Hero.coordinates.isWin()) {
-                Hero.Attack(Villain);
-                System.out.println(Villains.remove((VillainModel)Villain));
+                System.out.println("Do you want to attack the enemy or do you want to run?");
+                collision = true;
             } else {
                 VillainController.moveVillains(Villains, Hero);
+                updateMap();
             }
-            updateMap();
+        }
+    }
+
+    public void simulation(String line) {
+        if(collision == false) {
+            return;
+        }
+        if (line.equals("Attack")) {
+            // Todo set villain to null;
+            if (!Hero.Attack(Villain) || option == 1) {
+                System.out.println("You have lost and your heroes remains have been disposed of");
+                collision = false;
+                return;
+            } else {
+                System.out.println(Villains.remove((VillainModel) Villain));
+                updateMap();
+                collision = false;
+            }
+        } else if (line.equals("Run") || option == 2) {
+            if (!Hero.Run(Villain)) {
+                System.out.println("You have lost and your heroes remains have been disposed of");
+                collision = false;
+                return;
+            } else {
+                System.out.println(Villains.remove((VillainModel) Villain));
+                updateMap();
+                collision = false;
+            }
+        } else {
+            System.out.println("Please try again.");
         }
     }
 
@@ -126,30 +138,46 @@ public class GameController implements ActionListener {
         this.Villains = VillainFactory.getVillains(Hero.getLevel());
     }
 
+    private void setMap() {
+        map.Hero = Hero;
+        map.Villains = Villains;
+    }
+
     // Create/Select Hero
-   
+
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
-            if(e.getActionCommand() == "North" || e.getActionCommand() == "South" || e.getActionCommand() == "East" || e.getActionCommand() == "West")
+            if (e.getActionCommand() == "North" || e.getActionCommand() == "South" || e.getActionCommand() == "East"
+                    || e.getActionCommand() == "West")
                 updateView(e.getActionCommand());
-            if(e.getActionCommand() == "Create") {
+            if (e.getActionCommand() == "Create") {
                 Hero = HeroFactory.getNewHero(name, type);
+                GameGui.Hero = Hero;
                 // TODO Put this in Hero factory
-                
+
                 getVillains();
-                map = new Map(Hero, Villains);
+                setMap();
                 updateMap();
             }
-            if(e.getActionCommand() == "Select") {
+            if (e.getActionCommand() == "Select") {
                 selectHeroGui();
                 getVillains();
-                map = new Map(Hero, Villains);
+                setMap();
                 updateMap();
+            }
+            if (e.getActionCommand().equals("Attack") || e.getActionCommand().equals("Run")) {
+                simulation(e.getActionCommand());
+                gui.Health.setText("Health: " + Hero.getHitpoints());
+                gui.AttackDamage.setText("Attack: " + Hero.getAttack());
+                gui.Defence.setText("Defence: " + Hero.getDefence());
+                gui.Name.setText("Name: " + Hero.getName());
+                gui.Class.setText("Class: " + Hero.getType());
+                gui.Level.setText("Level: " + Hero.getLevel());
+                gui.Experience.setText("Experience: " + Hero.getExperience());
             }
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
                 | SecurityException e1) {
-            // TODO Auto-generated catch block
             e1.printStackTrace();
         }
     }
@@ -158,26 +186,25 @@ public class GameController implements ActionListener {
         String line;
         System.out.println("Give your hero a name: ");
         while (!(line = scanner.nextLine()).equals("Exit")) {
-                if(line.length() != 0) {
-                    name = line;
-                    break;
-                } else {
+            if (line.length() != 0) {
+                name = line;
+                break;
+            } else {
                 System.out.println("Invalid Command!!!");
             }
         }
-
-        System.out.println("Please select a class: ");
-        System.out.println("Assasin");
-        System.out.println("Thief");
-        System.out.println("Joker");
-        System.out.println("Warrior");
-        System.out.println("Ironman");
+        System.out.println("Please select a class(Pick a number): ");
+        for (String string : SwingyDatabase.getHeroTypes()) {
+            System.out.println(string);
+        }
 
         while (!(line = scanner.nextLine()).equals("Exit")) {
-            if(line.equals("Assasin") || line.equals("Thief") || line.equals("Warrior") || line.equals("Joker") || line.equals("Ironman")) {
-                Hero = HeroFactory.getNewHero(name, line);
+            Pattern pattern = Pattern.compile("^[0-9]+\\n?$");
+            Matcher matcher = pattern.matcher(line);
+            if (matcher.find()) {
+                Hero = HeroFactory.getNewHero(name, Integer.parseInt(line));
                 getVillains();
-                map = new Map(Hero, Villains);
+                setMap();
                 return true;
             } else {
                 System.out.println("Invalid Command!!!");
@@ -188,26 +215,26 @@ public class GameController implements ActionListener {
     }
 
     // Could have made this work for both Gui or Console
-    private void selectHeroConsole() {
+    private void selectHeroConsole(Scanner scanner) throws SQLException {
         String line;
-        String[][] Heroes = HeroFactory.updateHeroProfile(); 
-
-        for (String[] strings : Heroes) {
-            System.out.println(strings[0] + ". " + strings[2] + " " + strings[1]);
+        // This will display all heroTypes
+        ArrayList<String> CreatedHeroes = SwingyDatabase.getAllCreatedHeroes();
+        for (String string : CreatedHeroes) {
+            System.out.println(string);
         }
-
-        Scanner scanner = new Scanner(System.in);
         while (!(line = scanner.nextLine()).equals("Exit")) {
             Pattern pattern = Pattern.compile("^[0-9]+\\n?$");
             Matcher matcher = pattern.matcher(line);
-            if(matcher.find()) {
-                for (String[] strings : Heroes) {
-                    if(Integer.parseInt(strings[0]) == Integer.parseInt(line.trim())) {
-                        this.Hero = HeroFactory.getHero( strings[1], strings[2], Integer.parseInt(strings[3]), Integer.parseInt(line.trim()),Integer.parseInt(strings[4]), Integer.parseInt(strings[5]), Integer.parseInt(strings[6]),Integer.parseInt(strings[7]));
-                        getVillains();
-                        map = new Map(Hero, Villains);
-                        return;
-                    }
+            if (matcher.find()) {
+                if ((this.Hero = SwingyDatabase.getSelectedHero(Integer.parseInt(line))) != null) {
+                    System.out.println("hero has been selected");
+                    this.Hero = SwingyDatabase.getSelectedHero(Integer.parseInt(line));
+                    getVillains();
+                    setMap();
+                    // Maybe put this in HeroFactory
+                    return;
+                } else {
+                    System.out.println("That Hero does not exist yet. Please try again");
                 }
             } else {
                 System.out.println("Invalid command. please only use a number: ");
@@ -217,28 +244,9 @@ public class GameController implements ActionListener {
     }
 
     private void selectHeroGui() {
-        String[][] Heroes = HeroFactory.updateHeroProfile(); 
-        for (String[] strings : Heroes) {
-            System.out.println(selectedId);
-            if(Integer.parseInt(strings[0]) == selectedId) {
-                this.Hero = HeroFactory.getHero(strings[1], strings[2], Integer.parseInt(strings[3]), selectedId,Integer.parseInt(strings[4]), Integer.parseInt(strings[5]), Integer.parseInt(strings[6]),Integer.parseInt(strings[7]));
-                return;
-            }
+        if ((this.Hero = SwingyDatabase.getSelectedHero(selectedId)) != null) {
+            GameGui.Hero = Hero;
+            return;
         }
     }
-    
-    private void setLargestId() {
-        String[][] foo = HeroFactory.updateHeroProfile();
-        HeroModel.id = 0;
-        for (int i = 0; i < foo.length; i++) {
-            if(HeroModel.id <= Integer.parseInt(foo[i][0])) {
-                HeroModel.id = Integer.parseInt(foo[i][0]) + 1;
-            }
-        }
-    }
-
-    // Update Hero(Model)
-    // Movement
-    // Update position(View)
-
 }

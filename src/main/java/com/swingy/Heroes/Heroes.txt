@@ -1,5 +1,0 @@
-0 Bob Assasin 6 0 0 0 0
-1 Sarah Assasin 7 0 0 0 0
-2 Sarah Assasin 0 0 0 0 0
-3 Sam Warrior 0 0 0 0 0
-4 Enter Thief 0 0 0 0 0

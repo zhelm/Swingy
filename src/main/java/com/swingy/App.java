@@ -3,15 +3,16 @@ package com.swingy;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.SQLException;
 
 import com.swingy.Controller.GameController;
-import com.swingy.Model.HeroModel;
-import com.swingy.Model.SwingyDatabase.SwingyDatabase;
+
+// if I added coordinates to db it would have been easier to detect collisions for gui
 
 public class App {
-    public static void main(String[] args)
+  public static void main(String[] args) throws NoSuchMethodException, SecurityException, IllegalAccessException,
+      IllegalArgumentException, InvocationTargetException, IOException, SQLException
       {
-        SwingyDatabase.createInitialTables();
-        HeroModel hero = new HeroModel("Bob");
+        new GameController();
       }
 }

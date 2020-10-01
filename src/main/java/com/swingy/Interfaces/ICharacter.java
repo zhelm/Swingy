@@ -1,6 +1,6 @@
 package com.swingy.Interfaces;
 
 public interface ICharacter {
-    public void Attack(Object Enemy);
-    public void Run();
+    public boolean Attack(Object Enemy);
+    public boolean Run(Object Enemy);
 }

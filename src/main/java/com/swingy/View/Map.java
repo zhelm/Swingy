@@ -8,45 +8,37 @@ import com.swingy.Model.VillainModel;
 
 public class Map {
     public HeroModel Hero;
-    ArrayList<VillainModel> Villains;
-    public int mapSize; 
+    private static Map map = new Map();
+    public ArrayList<VillainModel> Villains;
 
-    public Map(HeroModel Hero, ArrayList<VillainModel> Villains) {
-        if(Hero != null) {
-            this.Hero = Hero;
-            this.Villains = Villains;
-            mapSize = (this.Hero.getLevel()-1)*5+10-(this.Hero.getLevel()%2);
-        }
+    private Map() {
+    }
+
+    public static Map thisMap() {
+        return map;
     }
 
     public String[][] getMap() {
-
         boolean match = false;
         int middleX = Hero.getXCoordinate();
         int middleY = Hero.getYCoordinate();
 
-        String[][] ret = new String[(this.Hero.getLevel()-1)*5+10-(this.Hero.getLevel()%2)][(this.Hero.getLevel()-1)*5+10-(this.Hero.getLevel()%2)];
+        String[][] ret = new String[(this.Hero.getLevel() - 1) * 5 + 10
+                - (this.Hero.getLevel() % 2)][(this.Hero.getLevel() - 1) * 5 + 10 - (this.Hero.getLevel() % 2)];
         for (String[] strings : ret) {
             Arrays.fill(strings, "*");
         }
-        
+
         // This is for the Villains
         for (int i = 0; i < Villains.size(); i++) {
-            if(Villains.get(i).getClass().getSimpleName().equals("DarkMage")) {
-                ret[Villains.get(i).coordinates.getYCoordinate()][Villains.get(i).coordinates.getXCoordinate()] = "M";    
-            } else if (Villains.get(i).getClass().getSimpleName().equals("Orc")) {
-                ret[Villains.get(i).coordinates.getYCoordinate()][Villains.get(i).coordinates.getXCoordinate()] = "O";
-            
-            } else {
-                ret[Villains.get(i).coordinates.getYCoordinate()][Villains.get(i).coordinates.getXCoordinate()] = "D";
-            }
-
+            ret[Villains.get(i).coordinates.getYCoordinate()][Villains.get(i).coordinates.getXCoordinate()] = String.valueOf(Villains.get(i).Type.charAt(0));
         }
         // // This is for the Hero
         for (int i = 0; i < ret.length; i++) {
-            if(i == middleY) match = true;
+            if (i == middleY)
+                match = true;
             for (int j = 0; j < ret[i].length; j++) {
-                if(j == middleX && match == true) {
+                if (j == middleX && match == true) {
                     match = false;
                     ret[i][j] = "H";
                     System.out.print("H" + ' ');
@@ -57,10 +49,10 @@ public class Map {
             System.out.println();
         }
 
-        return(ret);
+        return (ret);
     }
 
     public int getCenter() {
-        return(((this.Hero.getLevel()-1)*5+10-(this.Hero.getLevel()%2))/2);
+        return (((this.Hero.getLevel() - 1) * 5 + 10 - (this.Hero.getLevel() % 2)) / 2);
     }
 }
