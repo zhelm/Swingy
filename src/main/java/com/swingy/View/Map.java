@@ -3,6 +3,7 @@ package com.swingy.View;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.swingy.Controller.GameController;
 import com.swingy.Model.HeroModel;
 import com.swingy.Model.VillainModel;
 
@@ -29,11 +30,12 @@ public class Map {
             Arrays.fill(strings, "*");
         }
 
-        // This is for the Villains
         for (int i = 0; i < Villains.size(); i++) {
             ret[Villains.get(i).coordinates.getYCoordinate()][Villains.get(i).coordinates.getXCoordinate()] = String.valueOf(Villains.get(i).Type.charAt(0));
         }
-        // // This is for the Hero
+        if(GameController.isConsole) {
+            displayHeroStats();
+        }
         for (int i = 0; i < ret.length; i++) {
             if (i == middleY)
                 match = true;
@@ -41,15 +43,32 @@ public class Map {
                 if (j == middleX && match == true) {
                     match = false;
                     ret[i][j] = "H";
-                    System.out.print("H" + ' ');
+                    if(GameController.isConsole) {
+                        System.out.print("H" + ' ');
+                    }
                 } else {
-                    System.out.print(ret[i][j] + ' ');
+                    if(GameController.isConsole) {
+                        System.out.print(ret[i][j] + ' ');
+                    }
                 }
             }
-            System.out.println();
+            if(GameController.isConsole) {
+                System.out.println();
+            }
         }
 
         return (ret);
+    }
+
+    private void displayHeroStats() {
+
+        System.out.println("Name: " + Hero.getName());
+        System.out.println("Class: " + Hero.getType());
+        System.out.println("Level: " + Hero.getLevel());
+        System.out.println("Experience: " + Hero.getExperience());
+        System.out.println("Health: " + Hero.getHitpoints());
+        System.out.println("Attack: " + Hero.getAttack());
+        System.out.println("Defence: " + Hero.getDefence());
     }
 
     public int getCenter() {

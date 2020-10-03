@@ -13,6 +13,10 @@ public class App {
   public static void main(String[] args) throws NoSuchMethodException, SecurityException, IllegalAccessException,
       IllegalArgumentException, InvocationTargetException, IOException, SQLException
       {
-        new GameController();
+        if(args[0].equals("gui") || args[0].equals("console")) {
+          new GameController(args[0]);
+        } else {
+          System.out.println("Please give valid arguments (gui/console)");
+        }
       }
 }

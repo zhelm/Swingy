@@ -89,7 +89,6 @@ public class GameGui extends JFrame implements ActionListener {
     // if the button is pressed
     public void actionPerformed(ActionEvent e) {
         String s = e.getActionCommand();
-        System.out.println(s);
         if (HeroName != null) {
             GameController.name = HeroName.getText();
         }

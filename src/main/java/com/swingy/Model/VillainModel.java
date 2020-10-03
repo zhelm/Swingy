@@ -2,11 +2,19 @@ package com.swingy.Model;
 
 import java.util.ArrayList;
 
+import javax.validation.constraints.NotNull;
+
 public class VillainModel {
 
-    protected int Attack;
+    @NotNull
+    private int Attack;
+
+    @NotNull
     public String Type;
-    protected int HitPoints;
+
+    @NotNull
+    private int HitPoints;
+
     public Coordinates coordinates;
 
     public VillainModel(String Type, int level, int Attack, int HitPoints, float villainX, float villainY) {
@@ -16,7 +24,6 @@ public class VillainModel {
         this.Attack = Attack;
     }
 
-    // This is TOTALLY NOT SOLID
     public void moveVillain(int x, int y, ArrayList<VillainModel> Villains) {
         // Already check if a collision happens here. Lets not do that here
         if (this.coordinates.getYCoordinate() > y && !checkHeroCollision(x, y, 0, -1)) {
@@ -33,8 +40,6 @@ public class VillainModel {
     private boolean checkHeroCollision(int HeroX, int HeroY, int amountX, int amountY) {
         if ((this.coordinates.getXCoordinate() + amountX) == HeroX
                 && (this.coordinates.getYCoordinate() + amountY) == HeroY) {
-            // Ask what the user wants to do. Then either attack or let user run.
-            System.out.println("Going to attack the Hero");
             return true;
         }
         return false;

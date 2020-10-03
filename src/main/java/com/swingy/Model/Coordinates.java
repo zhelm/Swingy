@@ -51,7 +51,6 @@ public class Coordinates {
     }
 
     public VillainModel moveNorth(ArrayList<VillainModel> Villains, int amount) {
-        System.out.println("Moving North");
         if((ret = collisionNorthSouth(Villains, 0, -amount)) == null) {
             this.moveYCoordinate(-amount);
         }
@@ -59,7 +58,6 @@ public class Coordinates {
     }
 
     public VillainModel moveSouth(ArrayList<VillainModel> Villains, int amount) {
-        System.out.println("Moving South");
         if((ret = collisionNorthSouth(Villains, 0, amount)) == null) {
             this.moveYCoordinate(amount);
         }
@@ -67,7 +65,6 @@ public class Coordinates {
     }
 
     public VillainModel moveWest(ArrayList<VillainModel> Villains, int amount) {
-        System.out.println("Moving West");
         if((ret = collisionNorthSouth(Villains, -amount, 0)) == null) {
             this.moveXCoordinate(-amount);
         }
@@ -75,7 +72,6 @@ public class Coordinates {
     }
 
     public VillainModel moveEast(ArrayList<VillainModel> Villains, int amount) {
-        System.out.println("Moving East");
         if((ret = collisionNorthSouth(Villains, amount, 0)) == null) {
             this.moveXCoordinate(amount);
         }
@@ -85,8 +81,6 @@ public class Coordinates {
     private VillainModel collisionNorthSouth(ArrayList<VillainModel> Villains, int x, int y) {
         for (int i = 0; i < Villains.size(); i++) {
             if((this.getXCoordinate() + x) == Villains.get(i).coordinates.getXCoordinate() && (this.getYCoordinate() + y) == Villains.get(i).coordinates.getYCoordinate()) {
-                System.out.println(this.getClass());
-                System.out.println("<---------------------- Collision Detected ---------------------->");
                 return Villains.get(i);
             }
         }
@@ -108,7 +102,6 @@ public class Coordinates {
         Method method;
         var cArg = new Class[2];
         cArg[0] = Villains.getClass();
-        System.out.println(cArg[0]);
         cArg[1] = int.class;
         
         method = this.getClass().getMethod("move" + direction, cArg);

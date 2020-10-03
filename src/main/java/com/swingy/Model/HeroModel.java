@@ -3,6 +3,9 @@ package com.swingy.Model;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.validation.constraints.NotNull;
+
+import com.swingy.Controller.GameController;
 import com.swingy.Interfaces.ICharacter;
 import com.swingy.Model.SwingyDatabase.SwingyDatabase;
 
@@ -10,18 +13,29 @@ import com.swingy.Model.SwingyDatabase.SwingyDatabase;
  * HeroModel
  */
 public class HeroModel implements ICharacter {
-
+    @NotNull
     private String Name;
+    @NotNull
     private String Type;
+    @NotNull
     private int Level;
+    @NotNull
     private int Experience;
+    @NotNull
     private int heroId;
+    @NotNull
     public Coordinates coordinates;
+    @NotNull
     protected int Attack;
+    @NotNull
     protected int Defence;
+    @NotNull
     protected int HitPoints;
+    @NotNull
     protected int Weapon;
+    @NotNull
     protected int Armor;
+    @NotNull
     protected int Helm;
     
     protected ArrayList<String> Artifacts;
@@ -62,11 +76,10 @@ public class HeroModel implements ICharacter {
         return this.Level;
     }
 
-    public void gainExperience() {
-        this.Experience = this.Experience + this.Level*1000 + (this.Level - 1)*(this.Level - 1)*450;
-        System.out.println(this.Experience);
+    public void gainExperience(int amount) {
+        this.Experience = this.Experience + amount;
         SwingyDatabase.gainExperience(this.Experience, this.heroId);
-        if(this.Experience >= 1000 || this.Experience >= 2450 || this.Experience >= 4800 || this.Experience >= 8050 || this.Experience >= 12200) {
+        if(this.Experience >= (this.Level*1000 + (this.Level - 1)*(this.Level - 1)*450)) {
             this.gainLevel();
             this.Experience = 0;
         } else {
@@ -127,13 +140,21 @@ public class HeroModel implements ICharacter {
         villain.recieveDamage(this.getAttack());
         if(this.HitPoints <= 0) {
             // Lose
-            System.out.println("Now this is a loss");
+            if(GameController.isConsole) {
+                System.out.println("Now this is a loss");
+            }
+            // lose game
         } else if(!(villain.getHitpoints() <= 0)){
             // Attack again
-            System.out.println("Needed to attack again");
+            if(GameController.isConsole) {
+                System.out.println("Needed to attack again");
+            }
             return Attack(Enemy);
         } else {
-            System.out.println("This MOFO is dead now");
+            if(GameController.isConsole) {
+                System.out.println("The enemy has been defeated");
+            }
+            gainExperience(300);
             Random rand = new Random();
             float chance = rand.nextFloat();
             if(chance > 0.80) {
@@ -157,10 +178,11 @@ public class HeroModel implements ICharacter {
     @Override
     public boolean Run(Object Enemy) {
         Random rand = new Random();
-        if(rand.nextFloat() >= 0.5) {
+        float test = rand.nextFloat();
+        if(test >= 0.5) {
             return true;
         } else {
-            return Attack(Enemy);
+            return false;
         }
     }
 
